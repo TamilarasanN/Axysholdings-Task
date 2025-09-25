@@ -1,24 +1,36 @@
-import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
 import { Stack } from 'expo-router';
-import { StatusBar } from 'expo-status-bar';
-import 'react-native-reanimated';
+import React from 'react';
+import { AuthProvider, useAuth } from '../auth/AuthContext';
+import SplashScreen from '../screens/SplashScreen';
 
-import { useColorScheme } from '@/hooks/use-color-scheme';
+function RootLayoutNav() {
+  const { bootstrapDone } = useAuth();
+  
+  if (!bootstrapDone) {
+    return <SplashScreen />;
+  }
 
-export const unstable_settings = {
-  anchor: '(tabs)',
-};
+        return (
+          <Stack screenOptions={{ headerShown: false }}>
+            <Stack.Screen name="index" />
+            <Stack.Screen name="welcome" />
+            <Stack.Screen name="sign-up" />
+            <Stack.Screen name="otp-verification" />
+            <Stack.Screen name="create-password" />
+            <Stack.Screen name="biometricSetup" />
+            <Stack.Screen name="signupComplete" />
+            <Stack.Screen name="sign-in" />
+            <Stack.Screen name="faceIDLogin" />
+            <Stack.Screen name="(tabs)" />
+            <Stack.Screen name="modal" />
+          </Stack>
+        );
+}
 
 export default function RootLayout() {
-  const colorScheme = useColorScheme();
-
   return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="modal" options={{ presentation: 'modal', title: 'Modal' }} />
-      </Stack>
-      <StatusBar style="auto" />
-    </ThemeProvider>
+    <AuthProvider>
+      <RootLayoutNav />
+    </AuthProvider>
   );
 }
