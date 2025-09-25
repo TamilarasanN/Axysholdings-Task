@@ -14,13 +14,6 @@ export async function sendEmail(emailData: EmailData): Promise<boolean> {
   try {
     const SENDGRID_API_KEY = Constants.expoConfig?.extra?.EXPO_PUBLIC_SENDGRID_API_KEY;
     
-    console.log('SendGrid API Key check:', {
-      hasKey: !!SENDGRID_API_KEY,
-      keyLength: SENDGRID_API_KEY?.length,
-      keyStart: SENDGRID_API_KEY?.substring(0, 10) + '...',
-      isPlaceholder: SENDGRID_API_KEY === 'YOUR_SENDGRID_API_KEY_HERE'
-    });
-    
     if (!SENDGRID_API_KEY || SENDGRID_API_KEY === 'YOUR_SENDGRID_API_KEY_HERE') {
       console.warn('SendGrid API key not configured. Email not sent.');
       console.log('Email would be sent:', emailData);
